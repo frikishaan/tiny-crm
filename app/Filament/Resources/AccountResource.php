@@ -47,7 +47,15 @@ class AccountResource extends Resource
                 Card::make()
                     ->schema([
                         TextInput::make('total_sales')
-                            ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                            ->mask(fn (TextInput\Mask $mask) => $mask
+                                ->numeric()
+                                ->decimalPlaces(2)
+                                ->decimalSeparator('.')
+                                ->thousandsSeparator(',')
+                                ->normalizeZeros()
+                                ->padFractionalZeros()
+                            )
+                            ->prefix('$')
                             ->disabled()
                     ])
                     ->columnSpan(['lg' => 1])

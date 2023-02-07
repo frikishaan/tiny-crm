@@ -40,7 +40,7 @@ class LeadResource extends Resource
 
     protected static function getNavigationBadgeColor(): ?string
     {
-        return static::getModel()::count() > 10 ? 'warning' : 'primary';
+        return static::getModel()::where('status', 1)->count() > 10 ? 'warning' : 'primary';
     }
 
     public static function form(Form $form): Form
