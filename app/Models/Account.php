@@ -9,6 +9,11 @@ class Account extends Model
 {
     use HasFactory;
 
+    public function contacts()
+    {
+        return $this->hasMany(Contact::class, 'account_id');
+    }
+
     public function leads()
     {
         return $this->hasMany(Lead::class, 'customer_id');

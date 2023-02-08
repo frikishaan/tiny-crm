@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountResource\Pages;
 use App\Filament\Resources\AccountResource\RelationManagers;
+use App\Filament\Resources\AccountResource\RelationManagers\ContactsRelationManager;
 use App\Filament\Resources\AccountResource\RelationManagers\LeadsRelationManager;
 use App\Models\Account;
 use Filament\Forms;
@@ -86,6 +87,7 @@ class AccountResource extends Resource
     public static function getRelations(): array
     {
         return [
+            ContactsRelationManager::class,
             LeadsRelationManager::class
         ];
     }
