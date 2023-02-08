@@ -50,6 +50,7 @@ class LeadResource extends Resource
                 Card::make()
                     ->schema([
                         TextInput::make('title')
+                            ->maxLength(255)
                             ->required(),
                         Select::make('customer_id')
                             ->label('Customer')
@@ -57,7 +58,7 @@ class LeadResource extends Resource
                             ->searchable()
                             ->required()
                     ])
-                    ->columnSpan(2),
+                    ->columnSpan(fn(?Lead $record) => $record == null ? 'full' : 2),
                 Card::make()
                     ->schema([
                         Select::make('status')
@@ -72,6 +73,7 @@ class LeadResource extends Resource
                             ->label('Estimated revenue')
                             ->mask(fn (TextInput\Mask $mask) => $mask->money())
                     ])
+                    ->visible(fn(?Lead $record) => $record != null)
                     ->columnSpan(1)
             ])
             ->columns(3);

@@ -9,6 +9,10 @@ class Lead extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title', 'customer_id', 'estimated_revenue', 'status'
+    ];
+
     public function customer()
     {
         return $this->belongsTo(Account::class, 'customer_id');
