@@ -52,8 +52,10 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->searchable(),
                 TextColumn::make('email')
+                    ->searchable()
             ])
             ->filters([
                 //

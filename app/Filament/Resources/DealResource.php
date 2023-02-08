@@ -72,7 +72,8 @@ class DealResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title'),
+                TextColumn::make('title')
+                    ->searchable(),
 
             ])
             ->filters([
