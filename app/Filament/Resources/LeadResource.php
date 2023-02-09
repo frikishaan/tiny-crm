@@ -21,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LeadResource extends Resource
@@ -51,12 +52,14 @@ class LeadResource extends Resource
                     ->schema([
                         TextInput::make('title')
                             ->maxLength(255)
-                            ->required(),
+                            ->required()
+                            ->disabled(fn(Lead $record) => $record->status == 3),
                         Select::make('customer_id')
                             ->label('Customer')
                             ->options(Account::all()->pluck('name', 'id'))
                             ->searchable()
                             ->required()
+                            ->disabled(fn(Lead $record) => $record->status == 3)
                     ])
                     ->columnSpan(fn(?Lead $record) => $record == null ? 'full' : 2),
                 Card::make()
@@ -68,10 +71,12 @@ class LeadResource extends Resource
                                 3 => 'Qualified',
                                 4 => 'Disqualified'
                             ])
-                            ->required(),
+                            ->required()
+                            ->disabled(fn(Lead $record) => $record->status == 3),
                         TextInput::make('estimated_revenue')
                             ->label('Estimated revenue')
                             ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                            ->disabled(fn(Lead $record) => $record->status == 3)
                     ])
                     ->visible(fn(?Lead $record) => $record != null)
                     ->columnSpan(1)
@@ -130,5 +135,10 @@ class LeadResource extends Resource
             'create' => Pages\CreateLead::route('/create'),
             'edit' => Pages\EditLead::route('/{record}/edit'),
         ];
-    }    
+    }
+
+    private function qualified(Lead $record): bool
+    {
+        return $record->status == 3;
+    }
 }
