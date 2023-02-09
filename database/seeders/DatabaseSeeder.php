@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Lead;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -50,5 +51,8 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         });
+
+        // Create Products
+        Product::factory(25)->create();
     }
 }
