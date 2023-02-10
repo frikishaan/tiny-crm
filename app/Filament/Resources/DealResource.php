@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DealResource\Pages;
 use App\Filament\Resources\DealResource\RelationManagers;
+use App\Filament\Resources\DealResource\RelationManagers\ProductsRelationManager;
 use App\Models\Account;
 use App\Models\Deal;
 use App\Models\Lead;
@@ -15,7 +16,9 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -73,11 +76,29 @@ class DealResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('customer.name')
                     ->searchable(),
-
+                BadgeColumn::make('status')
+                    ->enum([
+                        1 => 'Open',
+                        2 => 'Won',
+                        3 => 'Lost'
+                    ])
+                    ->colors([
+                        'secondary' => 1,
+                        'success' => 2,
+                        'danger' => 3
+                    ])
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->options([
+                        1 => 'Open',
+                        2 => 'Won',
+                        3 => 'Lost'
+                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -90,7 +111,7 @@ class DealResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProductsRelationManager::class
         ];
     }
     

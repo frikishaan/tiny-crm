@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Deal;
+use App\Models\DealProduct;
 use App\Models\Lead;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
@@ -38,21 +39,26 @@ class DatabaseSeeder extends Seeder
             ]);
         });
 
+        // Create Products
+        Product::factory(25)->create();
+
         // Create Leads
         Lead::factory(100)->create()->each(function ($lead){
             if($lead->status == 3){ // Qualified
                 // Create Deal for this lead
-                Deal::create([
+                $deal = Deal::create([
                     'title' => $lead->title,
                     'customer_id' => $lead->customer_id,
                     'lead_id' => $lead->id,
                     'estimated_revenue' => $lead->estimated_revenue,
                     'status' => 1
                 ]);
+
+                // Add products to deal
+                DealProduct::factory(rand(1, 5))->create([
+                    'deal_id' => $deal->id
+                ]);
             }
         });
-
-        // Create Products
-        Product::factory(25)->create();
     }
 }
