@@ -55,13 +55,13 @@ class LeadResource extends Resource
                         TextInput::make('title')
                             ->maxLength(255)
                             ->required()
-                            ->disabled(fn(?Lead $record) => $record?->status == 3),
+                            ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
                         Select::make('customer_id')
                             ->label('Customer')
                             ->options(Account::all()->pluck('name', 'id'))
                             ->searchable()
                             ->required()
-                            ->disabled(fn(?Lead $record) => $record?->status == 3),
+                            ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
                         RichEditor::make('description')
                             ->disableToolbarButtons([
                                 'attachFiles',
@@ -79,7 +79,7 @@ class LeadResource extends Resource
                                 4 => 'Disqualified'
                             ])
                             ->required()
-                            ->disabled(fn(?Lead $record) => $record?->status == 3),
+                            ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
                         DatePicker::make('created_at')
                             ->format('d/m/Y')
                             ->disabled(),
@@ -91,10 +91,21 @@ class LeadResource extends Resource
                             ->format('d/m/Y')
                             ->disabled()
                             ->visible(fn(?Lead $record) => $record?->status == 4),
+                        Select::make('disqualification_reason')
+                            ->label('Reason for disqualification')
+                            ->options([
+                                1 => 'Budget',
+                                2 => 'Bad/fake data',
+                                3 => 'Not responsive',
+                                4 => 'Lost to Competitor',
+                                5 => 'Timeline'
+                            ])
+                            ->disabled()
+                            ->visible(fn(?Lead $record) => $record?->status == 4),
                         TextInput::make('estimated_revenue')
                             ->label('Estimated revenue')
                             ->mask(fn (TextInput\Mask $mask) => $mask->money())
-                            ->disabled(fn(?Lead $record) => $record?->status == 3)
+                            ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4]))
                     ])
                     ->visible(fn(?Lead $record) => $record != null)
                     ->columnSpan(1)

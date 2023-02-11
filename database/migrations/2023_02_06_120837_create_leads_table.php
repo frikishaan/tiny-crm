@@ -20,6 +20,8 @@ return new class extends Migration
             $table->float('estimated_revenue')->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->default(1); // Prospect
+            $table->integer('disqualification_reason')->nullable();
+            $table->text('disqualification_description')->nullable();
             $table->dateTime('date_disqualified')->nullable();
             $table->dateTime('date_qualified')->nullable();
             $table->timestamps();
