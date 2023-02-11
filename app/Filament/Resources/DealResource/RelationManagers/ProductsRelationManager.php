@@ -46,6 +46,7 @@ class ProductsRelationManager extends RelationManager
                     ->afterStateUpdated(fn($state, callable $set, callable $get) => 
                         $set('total_amount', (string)($get('price_per_unit') * $state))),
                 TextInput::make('price_per_unit')
+                    ->mask(fn (TextInput\Mask $mask) => $mask->money())
                     ->numeric()
                     ->required()
                     ->helperText('Price per unit of product')
@@ -93,7 +94,9 @@ class ProductsRelationManager extends RelationManager
                     ->modalHeading('Remove product'),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->label('Remove all')
+                    ->modalHeading('Remove all products'),
             ]);
     }    
 }

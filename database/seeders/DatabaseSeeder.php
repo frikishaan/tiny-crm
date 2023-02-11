@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
                     'customer_id' => $lead->customer_id,
                     'lead_id' => $lead->id,
                     'estimated_revenue' => $lead->estimated_revenue,
-                    'status' => 1
+                    'status' => rand(1, 3)
                 ]);
 
                 // Add products to deal
