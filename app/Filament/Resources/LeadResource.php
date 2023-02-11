@@ -9,7 +9,9 @@ use App\Models\Account;
 use App\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
@@ -53,13 +55,18 @@ class LeadResource extends Resource
                         TextInput::make('title')
                             ->maxLength(255)
                             ->required()
-                            ->disabled(fn(Lead $record) => $record->status == 3),
+                            ->disabled(fn(?Lead $record) => $record?->status == 3),
                         Select::make('customer_id')
                             ->label('Customer')
                             ->options(Account::all()->pluck('name', 'id'))
                             ->searchable()
                             ->required()
-                            ->disabled(fn(Lead $record) => $record->status == 3)
+                            ->disabled(fn(?Lead $record) => $record?->status == 3),
+                        RichEditor::make('description')
+                            ->disableToolbarButtons([
+                                'attachFiles',
+                                'codeBlock'
+                            ])
                     ])
                     ->columnSpan(fn(?Lead $record) => $record == null ? 'full' : 2),
                 Card::make()
@@ -72,11 +79,22 @@ class LeadResource extends Resource
                                 4 => 'Disqualified'
                             ])
                             ->required()
-                            ->disabled(fn(Lead $record) => $record->status == 3),
+                            ->disabled(fn(?Lead $record) => $record?->status == 3),
+                        DatePicker::make('created_at')
+                            ->format('d/m/Y')
+                            ->disabled(),
+                        DatePicker::make('date_qualified')
+                            ->format('d/m/Y')
+                            ->disabled()
+                            ->visible(fn(?Lead $record) => $record?->status == 3),
+                        DatePicker::make('date_disqualified')
+                            ->format('d/m/Y')
+                            ->disabled()
+                            ->visible(fn(?Lead $record) => $record?->status == 4),
                         TextInput::make('estimated_revenue')
                             ->label('Estimated revenue')
                             ->mask(fn (TextInput\Mask $mask) => $mask->money())
-                            ->disabled(fn(Lead $record) => $record->status == 3)
+                            ->disabled(fn(?Lead $record) => $record?->status == 3)
                     ])
                     ->visible(fn(?Lead $record) => $record != null)
                     ->columnSpan(1)
@@ -89,7 +107,11 @@ class LeadResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('customer.name')
+                    ->searchable()
+                    ->sortable(),
                 BadgeColumn::make('status')
                     ->enum([
                         1 => 'Prospect',

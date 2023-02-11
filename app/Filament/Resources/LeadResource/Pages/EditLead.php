@@ -20,7 +20,7 @@ class EditLead extends EditRecord
             Action::make('qualify')
                 ->action('qualifyLead')
                 ->icon('heroicon-o-badge-check')
-                ->visible($this->record->status != 3),
+                ->visible(!in_array($this->record->status, [3, 4])),
             Action::make('open-deal')
                 ->action('openDeal')
                 ->icon('heroicon-o-arrow-circle-right')
@@ -40,6 +40,7 @@ class EditLead extends EditRecord
         ]);
 
         $this->record->status = 3;
+        $this->record->date_qualified = now();
         $this->record->update();
 
         $this->notify('success', 'Lead Qualified');
