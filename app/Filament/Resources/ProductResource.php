@@ -77,7 +77,7 @@ class ProductResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('price')
-                    ->money()
+                    ->money(shouldConvert: true)
                     ->sortable(),
                 BadgeColumn::make('type')
                     ->enum([
