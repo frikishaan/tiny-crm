@@ -29,6 +29,8 @@ class AccountResource extends Resource
 
     protected static ?string $navigationGroup = 'People';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -39,7 +41,8 @@ class AccountResource extends Resource
                             TextInput::make('name')
                                 ->required(),
                             TextInput::make('email')
-                                ->email(),
+                                ->email()
+                                ->unique(),
                             TextInput::make('phone')
                                 ->tel(),
                             TextInput::make('address')

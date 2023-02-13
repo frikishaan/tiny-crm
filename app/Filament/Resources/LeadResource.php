@@ -37,6 +37,8 @@ class LeadResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     protected static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('status', 1)->count();
@@ -59,9 +61,23 @@ class LeadResource extends Resource
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
                         Select::make('customer_id')
                             ->label('Customer')
+                            ->relationship('customer', 'name')
                             ->options(Account::all()->pluck('name', 'id'))
                             ->searchable()
                             ->required()
+                            ->createOptionForm([
+                                TextInput::make('name')
+                                ->required(),
+                                TextInput::make('email')
+                                    ->email()
+                                    ->unique()
+                            ])
+                            ->createOptionAction(function (Forms\Components\Actions\Action $action) {
+                                return $action
+                                    ->modalHeading('Create customer')
+                                    ->modalButton('Create customer')
+                                    ->modalWidth('lg');
+                            })
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
                         RichEditor::make('description')
                             ->disableToolbarButtons([

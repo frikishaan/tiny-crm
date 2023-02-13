@@ -33,6 +33,16 @@ class ProductResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->name . ' ('. $record->product_id .')';
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'product_id'];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
