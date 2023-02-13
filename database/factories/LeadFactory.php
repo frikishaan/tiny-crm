@@ -19,6 +19,7 @@ class LeadFactory extends Factory
         return [
             'title' => fake()->sentence(fake()->numberBetween(2, 4)),
             'customer_id' => fake()->numberBetween(1, 25),
+            'source' => fake()->numberBetween(1, 5),
             'estimated_revenue' => fake()->numberBetween(10000, 1000000),
             'description' => fake()->realText(200),
             'status' => fake()->numberBetween(1, 4),

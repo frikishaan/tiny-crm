@@ -85,7 +85,7 @@ class LeadResource extends Resource
                                 'codeBlock'
                             ])
                     ])
-                    ->columnSpan(fn(?Lead $record) => $record == null ? 'full' : 2),
+                    ->columnSpan(2),
                 Card::make()
                     ->schema([
                         Select::make('status')
@@ -96,9 +96,19 @@ class LeadResource extends Resource
                                 4 => 'Disqualified'
                             ])
                             ->required()
+                            ->visible(fn(?Lead $record) => $record != null)
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
+                        Select::make('source')
+                            ->options([
+                                1 => 'Email',
+                                2 => 'Event',
+                                3 => 'Phone',
+                                4 => 'Referral',
+                                5 => 'Web'
+                            ]),
                         DatePicker::make('created_at')
                             ->format('d/m/Y')
+                            ->visible(fn(?Lead $record) => $record != null)
                             ->disabled(),
                         DatePicker::make('date_qualified')
                             ->format('d/m/Y')
@@ -124,7 +134,6 @@ class LeadResource extends Resource
                             ->mask(fn (TextInput\Mask $mask) => $mask->money())
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4]))
                     ])
-                    ->visible(fn(?Lead $record) => $record != null)
                     ->columnSpan(1)
             ])
             ->columns(3);
