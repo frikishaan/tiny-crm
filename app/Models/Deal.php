@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\DealQualified;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,6 +33,8 @@ class Deal extends Model
         $this->status = 2;
         $this->date_won = now();
         $this->save();
+
+        DealQualified::dispatch($this);
     }
     
     public function closeAsLost()

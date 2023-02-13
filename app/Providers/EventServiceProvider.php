@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\DealQualified;
+use App\Listeners\RollupTotalSalesForCustomer;
 use App\Models\DealProduct;
 use App\Observers\DealProductObserver;
 use Illuminate\Auth\Events\Registered;
@@ -20,6 +22,9 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        DealQualified::class => [
+            RollupTotalSalesForCustomer::class
+        ]
     ];
 
     /**
