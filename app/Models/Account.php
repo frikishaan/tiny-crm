@@ -22,4 +22,9 @@ class Account extends Model
     {
         return $this->hasMany(Lead::class, 'customer_id');
     }
+
+    public function deals()
+    {
+        return $this->hasMany(Deal::class, 'customer_id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Filament\Resources\LeadResource;
 use App\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Resources\Table;
@@ -40,7 +41,11 @@ class LeadsRelationManager extends RelationManager
         return $table
             ->columns([
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('estimated_revenue')
+                    ->sortable()
+                    ->money(shouldConvert: true),
                 BadgeColumn::make('status')
                     ->enum([
                         1 => 'Prospect',
@@ -75,7 +80,13 @@ class LeadsRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->action(function(){
+                        Notification::make()
+                            ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                            ->warning()
+                            ->send();
+                    }),
             ]);
     }
 }

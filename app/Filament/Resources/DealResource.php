@@ -10,8 +10,10 @@ use App\Models\Deal;
 use App\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -39,15 +41,23 @@ class DealResource extends Resource
                 Card::make()
                     ->schema([
                         TextInput::make('title')
-                            ->required(),
+                            ->required()
+                            ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
                         Select::make('customer_id')
                             ->label('Customer')
                             ->options(Account::all()->pluck('name', 'id'))
-                            ->searchable(),
+                            ->searchable()
+                            ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
                         Select::make('lead_id')
                             ->label('Originating lead')
                             ->options(Lead::all()->pluck('title', 'id'))
                             ->searchable()
+                            ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
+                        RichEditor::make('description')
+                            ->disableToolbarButtons([
+                                'attachFiles',
+                                'codeBlock'
+                            ])
                     ])
                     ->columnSpan(2),
                 
@@ -58,13 +68,16 @@ class DealResource extends Resource
                                     1 => 'Open',
                                     2 => 'Won',
                                     3 => 'Lost'
-                                ]),
+                                ])
+                                ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
                             TextInput::make('estimated_revenue')
                                 ->label('Estimated revenue')
-                                ->mask(fn (TextInput\Mask $mask) => $mask->money()),
+                                ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                                ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
                             TextInput::make('actual_revenue')
                                 ->label('Actual revenue')
                                 ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                                ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3]))
                         ])
                         ->columnSpan(1)
             ])
@@ -104,7 +117,13 @@ class DealResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()
+                    ->action(function(){
+                        Notification::make()
+                            ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
+                            ->warning()
+                            ->send();
+                    }),
             ]);
     }
     

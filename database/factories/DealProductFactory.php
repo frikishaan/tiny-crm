@@ -17,7 +17,7 @@ class DealProductFactory extends Factory
     public function definition()
     {
         return [
-            'product_id' => fake()->numberBetween(1, 25),
+            'product_id' => fake()->numberBetween(1, 10),
             'quantity' => fake()->numberBetween(1, 100),
             'price_per_unit' => fake()->numberBetween(500, 5000),
             'total_amount' => fake()->numberBetween(500, 5000)

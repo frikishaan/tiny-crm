@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('lead_id')->nullable();
             $table->float('estimated_revenue')->nullable();
             $table->float('actual_revenue')->nullable();
+            $table->text('description')->nullable();
             $table->integer('status')->default(1); // Open
             $table->dateTime('date_won')->nullable();
             $table->dateTime('date_lost')->nullable();
