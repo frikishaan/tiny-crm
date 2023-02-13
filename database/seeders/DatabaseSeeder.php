@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         // Create Admin User
         \App\Models\User::factory()->create([
             'name' => 'Admin',
-            'email' => 'admin@example.com',
+            'email' => 'admin@tinycrm.com',
             'password' => Hash::make('password'),
             'email_verified_at' => now()
         ]);
