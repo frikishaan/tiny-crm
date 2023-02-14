@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Filament\Resources\DealResource\Widgets;
+
+use App\Models\Deal;
+use Filament\Widgets\LineChartWidget;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
+
+class DealsWon extends LineChartWidget
+{
+    protected static ?string $heading = 'Deals won per month';
+
+    protected static ?string $pollingInterval = '30s';
+
+    protected static ?array $options = [
+        'plugins' => [
+            'legend' => [
+                'display' => false,
+            ],
+        ],
+    ];
+
+    protected function getData(): array
+    {
+        $data = Trend::query(
+                Deal::where('status', 2)
+            )
+            ->between(
+                start: now()->subYear(1),
+                end: now()
+            )
+            ->perMonth()
+            ->count();
+
+        return [
+            'datasets' => [
+                [
+                    'label' => 'Deals per month',
+                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                ],
+            ],
+            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+        ];
+    }
+}

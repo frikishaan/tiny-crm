@@ -53,7 +53,8 @@ class DatabaseSeeder extends Seeder
                     'lead_id' => $lead->id,
                     'estimated_revenue' => $lead->estimated_revenue,
                     'status' => rand(1, 3),
-                    'description' => $lead->description
+                    'description' => $lead->description,
+                    'created_at' => $lead->created_at
                 ]);
 
                 // Add products to deal

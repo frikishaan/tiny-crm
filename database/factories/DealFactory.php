@@ -19,8 +19,8 @@ class DealFactory extends Factory
         return [
             'title' => fake()->sentence(fake()->numberBetween(2, 4)),
             'customer_id' => fake()->numberBetween(1, 25),
-            'estimated_revenue' => fake()->numberBetween(10000, 1000000),
-            'actual_revenue' => fake()->numberBetween(10000, 1000000),
+            'estimated_revenue' => fake()->numberBetween(10000, 100000),
+            'actual_revenue' => fake()->numberBetween(10000, 100000),
             'status' => fake()->numberBetween(1, 4)
         ];
     }
