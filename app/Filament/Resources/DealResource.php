@@ -71,7 +71,8 @@ class DealResource extends Resource
                                     2 => 'Won',
                                     3 => 'Lost'
                                 ])
-                                ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
+                                ->visible(fn(?Deal $record) => $record != null)
+                                ->disabled(),
                             TextInput::make('estimated_revenue')
                                 ->label('Estimated revenue')
                                 ->mask(fn (TextInput\Mask $mask) => $mask->money())
