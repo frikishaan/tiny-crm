@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('product_id');
+            $table->string('product_id')->unique();
             $table->string('name');
             $table->integer('type');
             $table->float('price');
