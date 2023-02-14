@@ -14,9 +14,11 @@ class DealStats extends BaseWidget
         return [
             Card::make('Open deals', Deal::where('status', 1)->count()),
             Card::make('Deals won', Deal::where('status', 2)->count()),
-            Card::make('Deals lost', Deal::where('status', 3)->count()),
-            Card::make('Avg Revenue', 
-                    Money::USD(Deal::all()->avg('actual_revenue'), true))
+            Card::make('Avg Revenue (per deal)', 
+                Money::USD(Deal::all()->avg('actual_revenue'), true)),
+            Card::make('Total revenue', 
+                Money::USD(Deal::where('status', 2)->sum('actual_revenue'), true)    
+            ),
         ];
     }
 }

@@ -16,8 +16,11 @@ class LeadStats extends BaseWidget
             Card::make('Qualified leads', Lead::where('status', 2)->count()),
             Card::make('Disqualified leads', Lead::where('status', 3)->count()),
             Card::make('Avg Estimated Revenue', 
-                    Money::USD(Lead::all()->avg('estimated_revenue'), true)
-        ),
+                    Money::USD(
+                        Lead::whereIn('status', [2, 3])
+                            ->avg('estimated_revenue'), 
+                        true)
+            ),
         ];
     }
 }
