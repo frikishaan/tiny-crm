@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AccountResource\Pages;
 use App\Filament\Resources\AccountResource\RelationManagers;
 use App\Filament\Resources\AccountResource\RelationManagers\ContactsRelationManager;
+use App\Filament\Resources\AccountResource\RelationManagers\DealsRelationManager;
 use App\Filament\Resources\AccountResource\RelationManagers\LeadsRelationManager;
 use App\Models\Account;
 use Filament\Forms;
@@ -102,7 +103,8 @@ class AccountResource extends Resource
     {
         return [
             ContactsRelationManager::class,
-            LeadsRelationManager::class
+            LeadsRelationManager::class,
+            DealsRelationManager::class
         ];
     }
     
