@@ -46,6 +46,6 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessFilament(): bool
     {
-        return true;
+        return $this->email == "admin@tinycrm.com";
     }
 }
