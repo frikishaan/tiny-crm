@@ -3,10 +3,12 @@
 namespace App\Filament\Resources\UserResource\Pages;
 
 use App\Filament\Resources\UserResource;
+use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions;
 use Filament\Pages\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
 class EditUser extends EditRecord
@@ -27,15 +29,26 @@ class EditUser extends EditRecord
                         ->label('Confirm new password')
                         ->password()
                 ]),
-            Actions\DeleteAction::make(),
+            // Actions\DeleteAction::make(),
         ];
     }
 
     public function updatePassword(array $data): void
     {
-        $this->record->password = Hash::make($data['password']);
-        $this->record->save();
+        if($this->record->id != 1){
+            $this->record->password = Hash::make($data['password']);
+            $this->record->save();
+        }
 
         $this->notify('success', 'Password updated successfully');
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        if($record->id != 1){
+            $record->update($data);
+        }
+    
+        return $record;
     }
 }
