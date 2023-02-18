@@ -28,6 +28,8 @@ return new class extends Migration
             
             $table->foreign('customer_id')->references('id')->on('accounts');
             $table->foreign('lead_id')->references('id')->on('leads');
+
+            $table->index(['status', 'customer_id', 'lead_id']);
         });
     }
 

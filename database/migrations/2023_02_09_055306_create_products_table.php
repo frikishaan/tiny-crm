@@ -21,6 +21,8 @@ return new class extends Migration
             $table->float('price');
             $table->boolean('is_available')->default(true);
             $table->timestamps();
+
+            $table->index(['product_id', 'name']);
         });
     }
 
