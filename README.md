@@ -1,6 +1,6 @@
 # Tiny crm
 
-This is a app created for Linode hackathon on [Dev](https://dev.to/devteam/announcing-the-linode-dev-hackathon-377p).
+This is a small and Open-source CRM application created using the [Filament PHP](https://filamentphp.com/).
 
 ## Tech stack
 
@@ -44,3 +44,6 @@ Optionally, you can create the dummy data by running the seeder as -
 ```bash
 php artisan db:seed
 ```
+
+## Need Consultancy? 
+If you need help customizing this application or want to create your own application like this, contact me [here](https://www.upwork.com/services/product/consulting-hr-a-customer-crm-software-1651120102232907776?ref=project_share).
