@@ -53,7 +53,7 @@ class ProductResource extends Resource
                             ->label('Product ID')
                             ->required()
                             ->maxLength(255)
-                            ->unique(column: 'product_id', ignorable: fn(Model $record) => $record)
+                            ->unique(column: 'product_id', ignoreRecord: true)
                             ->helperText('A unique product identifier, for ex SKU-1234'),
                         TextInput::make('name')
                             ->required()
