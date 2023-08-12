@@ -2,12 +2,8 @@
 
 use App\Enums\LeadDisqualificationReason;
 use App\Enums\LeadStatus;
-use App\Filament\Resources\AccountResource;
-use App\Filament\Resources\DealResource;
 use App\Filament\Resources\LeadResource;
 use App\Models\Account;
-use App\Models\Contact;
-use App\Models\Deal;
 use App\Models\Lead;
 use Filament\Pages\Actions\DeleteAction;
 
