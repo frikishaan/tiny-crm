@@ -80,6 +80,12 @@ jobs:
           DB_PORT: ${{ job.services.postgres.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Compile assets
+        run: npm run build
+
       - name: Execute tests
         run: vendor/bin/pest --ci
         env:
