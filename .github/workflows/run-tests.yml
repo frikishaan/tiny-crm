@@ -1,5 +1,7 @@
 name: Testing Tiny CRM
+
 on: [push, pull_request]
+
 jobs:
   laravel:
     name: Laravel (PHP ${{ matrix.php-versions }})
@@ -28,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-versions: ["8.1"]
+        php-versions: ["8.1", "8.2"]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -61,6 +63,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-progress --prefer-dist --optimize-autoloader
 
+      - name: List Installed Dependencies
+        run: composer show -D
+
       - name: Prepare the application
         run: |
           php -r "file_exists('.env') || copy('.env.example', '.env');"
@@ -75,8 +80,8 @@ jobs:
           DB_PORT: ${{ job.services.postgres.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
 
-      - name: Test with pest
-        run: vendor/bin/pest --coverage-text
+      - name: Execute tests
+        run: vendor/bin/pest --ci
         env:
           DB_PORT: ${{ job.services.postgres.ports[5432] }}
           REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
