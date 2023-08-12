@@ -7,8 +7,11 @@ use App\Filament\Resources\DealResource;
 use App\Filament\Resources\LeadResource;
 use App\Models\Account;
 use App\Models\Deal;
+use App\Models\DealProduct;
 use App\Models\Lead;
+use App\Models\Product;
 use Filament\Pages\Actions\DeleteAction;
+use Filament\Tables\Actions\CreateAction;
 
 use function Pest\Livewire\livewire;
 
@@ -169,57 +172,63 @@ it('can delete', function () {
     $this->assertModelMissing($deal);
 });
 
-it('can add product to deal')->todo();
-it('can remove product from deal')->todo();
-it('can close as won')->todo();
-it('can close as lost')->todo();
-
-// it('can qualify', function() {
-//     $lead = Lead::factory()->create([
-//         'status' => LeadStatus::Prospect->value // Prospect
-//     ]);
-
-//     livewire(LeadResource\Pages\EditLead::class, [
-//         'record' => $lead->getRouteKey(),
-//     ])
-//         ->callPageAction('qualify');
+it('can render product relations', function () {
+    Product::factory(10)->create();
     
-//     expect($lead->refresh())
-//         ->status->toBe(LeadStatus::Qualified->value);
+    $deal = Deal::factory()
+        ->has(DealProduct::factory()->count(3), 'products')
+        ->create();
+ 
+    livewire(DealResource\RelationManagers\ProductsRelationManager::class, [
+        'ownerRecord' => $deal,
+    ])
+        ->assertSuccessful();
+});
 
-//     // TODO: test for redirect
+it('can close as won', function() {
+    Product::factory(10)->create();
+    
+    $deal = Deal::factory()
+        ->has(DealProduct::factory()->count(3), 'products')
+        ->create([
+            'status' => DealStatus::Open->value
+        ]);
 
-//     livewire(LeadResource\Pages\EditLead::class, [
-//         'record' => $lead->getRouteKey(),
-//     ])
-//         ->assertPageActionHidden('qualify')
-//         ->assertPageActionHidden('disqualify')
-//         ->assertPageActionHidden(DeleteAction::class)
-//         ->assertPageActionExists('open-deal');
-// });
+    livewire(DealResource\Pages\EditDeal::class, [
+        'record' => $deal->getRouteKey(),
+    ])
+        ->callPageAction('close_as_won');
 
-// it('can disqualify', function() {
-//     $lead = Lead::factory()->create([
-//         'status' => LeadStatus::Prospect->value // Prospect
-//     ]);
+    expect($deal->refresh())
+        ->status->toBe(DealStatus::Won->value);
 
-//     livewire(LeadResource\Pages\EditLead::class, [
-//         'record' => $lead->getRouteKey(),
-//     ])
-//         ->callPageAction('disqualify', data: [
-//             'disqualification_reason' => LeadDisqualificationReason::Bad_Data->value,
-//             'disqualification_description' => 'Spam form submission'
-//         ]);
+    livewire(DealResource\Pages\EditDeal::class, [
+        'record' => $deal->getRouteKey(),
+    ])
+        ->assertPageActionHidden('close_as_won')
+        ->assertPageActionHidden('close_as_lost');
+});
 
-//     expect($lead->refresh())
-//         ->status->toBe(LeadStatus::Disqualified->value)
-//         ->disqualification_reason->toBe(LeadDisqualificationReason::Bad_Data->value)
-//         ->disqualification_description->toBe('Spam form submission');
+it('can close as lost', function() {
+    Product::factory(10)->create();
+    
+    $deal = Deal::factory()
+        ->has(DealProduct::factory()->count(3), 'products')
+        ->create([
+            'status' => DealStatus::Open->value
+        ]);
 
-//     livewire(LeadResource\Pages\EditLead::class, [
-//         'record' => $lead->getRouteKey(),
-//     ])
-//         ->assertPageActionHidden('qualify')
-//         ->assertPageActionHidden('disqualify')
-//         ->assertPageActionHidden(DeleteAction::class);
-// });
+    livewire(DealResource\Pages\EditDeal::class, [
+        'record' => $deal->getRouteKey(),
+    ])
+        ->callPageAction('close_as_lost');
+
+    expect($deal->refresh())
+        ->status->toBe(DealStatus::Lost->value);
+
+    livewire(DealResource\Pages\EditDeal::class, [
+        'record' => $deal->getRouteKey(),
+    ])
+        ->assertPageActionHidden('close_as_won')
+        ->assertPageActionHidden('close_as_lost');
+});
