@@ -19,7 +19,9 @@ class AccountFactory extends Factory
         return [
             'name' => fake()->company(),
             'email' => fake()->safeEmail(),
-            'phone' => fake()->phoneNumber(),
+
+            // added en_IN locale to avoid brackets in phone number
+            'phone' => fake('en_IN')->phoneNumber(),
             'address' => fake()->address(),
             'total_sales' => fake()->numberBetween(0, 1000000)
         ];
