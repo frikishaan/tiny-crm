@@ -1,4 +1,4 @@
-name: Testing Tiny CRM
+name: Tests
 
 on: [push, pull_request]
 
