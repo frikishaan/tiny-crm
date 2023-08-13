@@ -49,7 +49,8 @@ class DealResource extends Resource
                             ->label('Customer')
                             ->options(Account::all()->pluck('name', 'id'))
                             ->searchable()
-                            ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
+                            ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3]))
+                            ->required(),
                         Select::make('lead_id')
                             ->label('Originating lead')
                             ->options(Lead::all()->pluck('title', 'id'))

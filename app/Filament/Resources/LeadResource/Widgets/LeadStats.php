@@ -18,7 +18,7 @@ class LeadStats extends BaseWidget
             Card::make('Avg Estimated Revenue', 
                     Money::USD(
                         Lead::whereIn('status', [2, 3])
-                            ->avg('estimated_revenue'), 
+                            ->avg('estimated_revenue') ?? 0, 
                         true)
             ),
         ];
