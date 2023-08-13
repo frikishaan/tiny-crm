@@ -19,7 +19,9 @@ class ContactFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
-            'phone' => fake()->phoneNumber()
+            
+            // added en_IN locale to avoid brackets in phone number
+            'phone' => fake('en_IN')->phoneNumber() 
         ];
     }
 }
