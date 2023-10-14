@@ -7,7 +7,7 @@ This is a small and Open-source CRM application created using the [Filament PHP]
 ## Tech stack
 
 -   PHP (Laravel)
--   Filament PHP
+-   Filament PHP (v2)
 -   Tailwind CSS
 -   Alpine JS
 -   PostgreSQL
