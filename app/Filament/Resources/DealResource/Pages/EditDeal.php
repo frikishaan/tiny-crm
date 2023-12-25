@@ -11,12 +11,12 @@ class EditDeal extends EditRecord
 {
     protected static string $resource = DealResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Action::make('close_as_won')
                 ->label('Close As Won')
-                ->icon('heroicon-o-badge-check')
+                ->icon('heroicon-o-check-badge')
                 ->action('closeAsWon')
                 ->visible(!in_array($this->record->status, [2, 3])),
             Action::make('close_as_lost')

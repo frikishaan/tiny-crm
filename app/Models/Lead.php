@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LeadStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,10 @@ class Lead extends Model
     protected $fillable = [
         'title', 'customer_id', 'estimated_revenue', 'status', 'source',
         'description', 'disqualification_reason', 'disqualification_description'
+    ];
+
+    public $casts = [
+        'status' => LeadStatus::class
     ];
 
     public function customer()

@@ -11,14 +11,17 @@ use App\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Support\RawJs;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,7 +31,7 @@ class DealResource extends Resource
 {
     protected static ?string $model = Deal::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-check';
+    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
 
     protected static ?string $navigationGroup = 'Sales';
 
@@ -64,7 +67,7 @@ class DealResource extends Resource
                     ])
                     ->columnSpan(2),
                 
-                    Card::make()
+                    Section::make()
                         ->schema([
                             Select::make('status')
                                 ->options([
@@ -76,11 +79,11 @@ class DealResource extends Resource
                                 ->disabled(),
                             TextInput::make('estimated_revenue')
                                 ->label('Estimated revenue')
-                                ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                                ->mask(RawJs::make('$money($input)'))
                                 ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
                             TextInput::make('actual_revenue')
                                 ->label('Actual revenue')
-                                ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                                ->mask(RawJs::make('$money($input)'))
                                 ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3]))
                         ])
                         ->columnSpan(1)
@@ -97,17 +100,8 @@ class DealResource extends Resource
                     ->sortable(),
                 TextColumn::make('customer.name')
                     ->searchable(),
-                BadgeColumn::make('status')
-                    ->enum([
-                        1 => 'Open',
-                        2 => 'Won',
-                        3 => 'Lost'
-                    ])
-                    ->colors([
-                        'secondary' => 1,
-                        'success' => 2,
-                        'danger' => 3
-                    ])
+                TextColumn::make('status')
+                    ->badge()
             ])
             ->filters([
                 SelectFilter::make('status')

@@ -6,9 +6,11 @@ use App\Filament\Resources\DealResource;
 use App\Filament\Resources\LeadResource;
 use App\Models\Deal;
 use App\Models\Lead;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Pages\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -16,15 +18,14 @@ class EditLead extends EditRecord
 {
     protected static string $resource = LeadResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Action::make('qualify')
                 ->action('qualifyLead')
-                ->icon('heroicon-o-badge-check')
+                ->icon('heroicon-o-check-badge')
                 ->visible(!in_array($this->record->status, [3, 4])),
             Action::make('disqualify')
-                ->action('disqualifyLead')
                 ->icon('heroicon-o-x-circle')
                 ->color('warning')
                 ->form([
@@ -40,13 +41,23 @@ class EditLead extends EditRecord
                     Textarea::make('disqualification_description')
                         ->label('Description')
                 ])
+                ->action(function (array $data, Lead $record): void {
+                    $record->disqualify(
+                        $data['disqualification_reason'], 
+                        $data['disqualification_description']
+                    );
+            
+                    Notification::make()
+                        ->title('Lead has been disqualified')
+                        ->success();
+                })
                 ->modalHeading('Disqualify lead')
                 ->visible(!in_array($this->record->status, [3, 4])),
             Action::make('open-deal')
                 ->action('openDeal')
-                ->icon('heroicon-o-arrow-circle-right')
+                ->icon('heroicon-o-arrow-right-circle')
                 ->visible(in_array($this->record->status, [3])),
-            Actions\DeleteAction::make()
+            DeleteAction::make()
                 ->visible(!in_array($this->record->status, [3, 4])),
         ];
     }
@@ -55,19 +66,23 @@ class EditLead extends EditRecord
     {
         $deal = $this->record->qualify();
 
-        $this->notify('success', 'Lead Qualified');
+        Notification::make()
+            ->title('Lead Qualified')
+            ->success();
 
         $this->redirect(DealResource::getUrl('edit', ['record' => $deal->id]));
     }
 
-    public function disqualifyLead(array $data): void
+    public function disqualifyLead(array $data, Lead $lead): void
     {
         $this->record->disqualify(
             $data['disqualification_reason'], 
             $data['disqualification_description']
         );
 
-        $this->notify('success', 'Lead has been disqualified');
+        Notification::make()
+            ->title('Lead has been disqualified')
+            ->success();
     }
 
     public function openDeal()

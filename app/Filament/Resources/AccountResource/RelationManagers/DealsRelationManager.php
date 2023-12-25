@@ -7,11 +7,10 @@ use App\Models\Deal;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +22,7 @@ class DealsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -33,7 +32,7 @@ class DealsRelationManager extends RelationManager
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([
@@ -42,9 +41,10 @@ class DealsRelationManager extends RelationManager
                     ->sortable(),
                 TextColumn::make('actual_revenue')
                     ->sortable()
-                    ->money(shouldConvert: true),
-                BadgeColumn::make('status')
-                    ->enum([
+                    ->money('USD'),
+                TextColumn::make('status')
+                    ->badge()
+                    ->options([
                         1 => 'Open',
                         2 => 'Won',
                         3 => 'Lost'

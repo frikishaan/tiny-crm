@@ -12,7 +12,7 @@ class Dashboard extends BasePage
 {
     protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
 
-    protected function getWidgets(): array
+    public function getWidgets(): array
     {
         return [
             LeadStats::class,

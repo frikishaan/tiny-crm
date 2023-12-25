@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DealStatus;
 use App\Events\DealQualified;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,10 @@ class Deal extends Model
     public $fillable = [
         'title', 'customer_id', 'estimated_revenue', 'lead_id',
         'actual_revenue', 'status'
+    ];
+
+    public $casts = [
+        'status' => DealStatus::class
     ];
 
     public function customer()

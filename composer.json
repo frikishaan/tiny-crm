@@ -9,7 +9,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "filament/filament": "^2.0",
+        "akaunting/laravel-money": "^5.1",
+        "filament/filament": "^3.1",
         "flowframe/laravel-trend": "^0.1.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.8",
@@ -18,6 +19,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
+        "filament/upgrade": "^3.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",

@@ -10,7 +10,7 @@ class EditContact extends EditRecord
 {
     protected static string $resource = ContactResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),
