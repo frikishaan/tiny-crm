@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\LeadResource\Pages;
 
+use App\Enums\LeadStatus;
 use App\Filament\Resources\DealResource;
 use App\Filament\Resources\LeadResource;
 use App\Models\Deal;
@@ -22,9 +23,17 @@ class EditLead extends EditRecord
     {
         return [
             Action::make('qualify')
-                ->action('qualifyLead')
+                ->action(function() {
+                    $deal = $this->record->qualify();
+
+                    Notification::make()
+                        ->title('Lead Qualified')
+                        ->success();
+
+                    $this->redirect(DealResource::getUrl('edit', ['record' => $deal->id]));
+                })
                 ->icon('heroicon-o-check-badge')
-                ->visible(!in_array($this->record->status, [3, 4])),
+                ->visible(!in_array($this->record->status, [LeadStatus::Qualified, LeadStatus::Disqualified])),
             Action::make('disqualify')
                 ->icon('heroicon-o-x-circle')
                 ->color('warning')
@@ -52,37 +61,14 @@ class EditLead extends EditRecord
                         ->success();
                 })
                 ->modalHeading('Disqualify lead')
-                ->visible(!in_array($this->record->status, [3, 4])),
+                ->visible(!in_array($this->record->status, [LeadStatus::Qualified, LeadStatus::Disqualified])),
             Action::make('open-deal')
                 ->action('openDeal')
                 ->icon('heroicon-o-arrow-right-circle')
-                ->visible(in_array($this->record->status, [3])),
+                ->visible(in_array($this->record->status, [LeadStatus::Qualified])),
             DeleteAction::make()
-                ->visible(!in_array($this->record->status, [3, 4])),
+                ->visible(!in_array($this->record->status, [LeadStatus::Qualified, LeadStatus::Disqualified])),
         ];
-    }
-
-    public function qualifyLead()
-    {
-        $deal = $this->record->qualify();
-
-        Notification::make()
-            ->title('Lead Qualified')
-            ->success();
-
-        $this->redirect(DealResource::getUrl('edit', ['record' => $deal->id]));
-    }
-
-    public function disqualifyLead(array $data, Lead $lead): void
-    {
-        $this->record->disqualify(
-            $data['disqualification_reason'], 
-            $data['disqualification_description']
-        );
-
-        Notification::make()
-            ->title('Lead has been disqualified')
-            ->success();
     }
 
     public function openDeal()

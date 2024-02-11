@@ -5,7 +5,7 @@ use App\Enums\LeadStatus;
 use App\Filament\Resources\LeadResource;
 use App\Models\Account;
 use App\Models\Lead;
-use Filament\Pages\Actions\DeleteAction;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 
@@ -103,7 +103,7 @@ it('can retrieve data', function () {
         ->assertFormSet([
             'title' => $lead->title,
             'customer_id' => $lead->customer_id,
-            'status' => $lead->status,
+            'status' => $lead->status->value,
             'source' => $lead->source,
             'description' => $lead->description,
             'estimated_revenue' => $lead->estimated_revenue,
@@ -136,7 +136,7 @@ it('can save', function () {
         ->source->toBe($newData->source)
         ->description->toBe($newData->description)
         ->estimated_revenue->toBe((string)$newData->estimated_revenue)
-        ->status->toBe(LeadStatus::Open->value);
+        ->status->value->toBe(LeadStatus::Open->value);
 });
 
 it('can validate input on edit form', function () {
@@ -167,7 +167,7 @@ it('can delete', function () {
     livewire(LeadResource\Pages\EditLead::class, [
         'record' => $lead->getRouteKey(),
     ])
-        ->callPageAction(DeleteAction::class);
+        ->callAction(DeleteAction::class);
  
     $this->assertModelMissing($lead);
 });
@@ -180,20 +180,20 @@ it('can qualify', function() {
     livewire(LeadResource\Pages\EditLead::class, [
         'record' => $lead->getRouteKey(),
     ])
-        ->callPageAction('qualify');
-    
+        ->callAction('qualify');
+  
     expect($lead->refresh())
-        ->status->toBe(LeadStatus::Qualified->value);
+        ->status->value->toBe(LeadStatus::Qualified->value);
 
     // TODO: test for redirect
 
     livewire(LeadResource\Pages\EditLead::class, [
         'record' => $lead->getRouteKey(),
     ])
-        ->assertPageActionHidden('qualify')
-        ->assertPageActionHidden('disqualify')
-        ->assertPageActionHidden(DeleteAction::class)
-        ->assertPageActionExists('open-deal');
+        ->assertActionHidden('qualify')
+        ->assertActionHidden('disqualify')
+        ->assertActionHidden(DeleteAction::class)
+        ->assertActionVisible('open-deal');
 });
 
 it('can disqualify', function() {
@@ -204,20 +204,20 @@ it('can disqualify', function() {
     livewire(LeadResource\Pages\EditLead::class, [
         'record' => $lead->getRouteKey(),
     ])
-        ->callPageAction('disqualify', data: [
+        ->callAction('disqualify', data: [
             'disqualification_reason' => LeadDisqualificationReason::Bad_Data->value,
             'disqualification_description' => 'Spam form submission'
         ]);
 
     expect($lead->refresh())
-        ->status->toBe(LeadStatus::Disqualified->value)
+        ->status->value->toBe(LeadStatus::Disqualified->value)
         ->disqualification_reason->toBe(LeadDisqualificationReason::Bad_Data->value)
         ->disqualification_description->toBe('Spam form submission');
 
     livewire(LeadResource\Pages\EditLead::class, [
         'record' => $lead->getRouteKey(),
     ])
-        ->assertPageActionHidden('qualify')
-        ->assertPageActionHidden('disqualify')
-        ->assertPageActionHidden(DeleteAction::class);
+        ->assertActionHidden('qualify')
+        ->assertActionHidden('disqualify')
+        ->assertActionHidden(DeleteAction::class);
 });

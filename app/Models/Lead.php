@@ -34,7 +34,7 @@ class Lead extends Model
             'estimated_revenue' => $this->estimated_revenue
         ]);
 
-        $this->status = 3;
+        $this->status = LeadStatus::Qualified->value;
         $this->date_qualified = now();
         $this->update();
 
@@ -43,7 +43,7 @@ class Lead extends Model
 
     public function disqualify(?int $reason, ?string $description): void
     {
-        $this->status = 4;
+        $this->status = LeadStatus::Disqualified->value;
         $this->date_disqualified = now();
         $this->disqualification_reason = $reason;
         $this->disqualification_description = $description;
