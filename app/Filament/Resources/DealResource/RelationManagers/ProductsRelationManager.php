@@ -2,13 +2,13 @@
 
 namespace App\Filament\Resources\DealResource\RelationManagers;
 
-use App\Models\DealProduct;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\RawJs;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
@@ -46,7 +46,7 @@ class ProductsRelationManager extends RelationManager
                     ->afterStateUpdated(fn($state, callable $set, callable $get) => 
                         $set('total_amount', (string)($get('price_per_unit') * $state))),
                 TextInput::make('price_per_unit')
-                    ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                    ->mask(RawJs::make('$money($input)'))
                     ->numeric()
                     ->required()
                     ->helperText('Price per unit of product')
@@ -55,7 +55,7 @@ class ProductsRelationManager extends RelationManager
                         $set('total_amount', (string)($get('quantity') * $state))),
                 TextInput::make('total_amount')
                     ->label('Total amount')
-                    ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                    ->mask(RawJs::make('$money($input)'))
                     ->disabled()
                     ->default(0)
             ]);
@@ -72,12 +72,12 @@ class ProductsRelationManager extends RelationManager
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('price_per_unit')
-                    ->money(shouldConvert: true)
+                    ->money('USD')
                     ->sortable(),
                 TextColumn::make('quantity')
                     ->sortable(),
                 TextColumn::make('total_amount')
-                    ->money(shouldConvert: true)
+                    ->money('USD')
                     ->sortable()
             ])
             ->filters([
