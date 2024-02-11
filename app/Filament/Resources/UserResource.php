@@ -9,9 +9,9 @@ use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
@@ -44,7 +44,7 @@ class UserResource extends Resource
                     ->password()
                     ->reactive()
                     ->confirmed()
-                    ->disableAutocomplete()
+                    ->autocomplete(false)
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->visible(fn(?User $record) => $record == null),
                  

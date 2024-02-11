@@ -7,11 +7,11 @@ use App\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Resources\Table;
+use Filament\Support\RawJs;
+use Filament\Tables\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +23,7 @@ class LeadsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -32,11 +32,11 @@ class LeadsRelationManager extends RelationManager
                     ->maxLength(255),
                 TextInput::make('estimated_revenue')
                     ->label('Estimated revenue')
-                    ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                    ->mask(RawJs::make('$money($input)'))
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([
@@ -45,14 +45,9 @@ class LeadsRelationManager extends RelationManager
                     ->sortable(),
                 TextColumn::make('estimated_revenue')
                     ->sortable()
-                    ->money(shouldConvert: true),
-                BadgeColumn::make('status')
-                    ->enum([
-                        1 => 'Prospect',
-                        2 => 'Open',
-                        3 => 'Qualified',
-                        4 => 'Disqualified'
-                    ])
+                    ->money('USD'),
+                TextColumn::make('status')
+                    ->badge()
                     ->colors([
                         'secondary' => 1,
                         'warning' => 2,
@@ -75,7 +70,7 @@ class LeadsRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\Action::make('edit')
                     ->label('Edit')
-                    ->icon('heroicon-o-pencil-alt')
+                    ->icon('heroicon-o-pencil-square')
                     ->url(fn(Lead $record) => LeadResource::getUrl('edit', ['record' => $record->id])),
                 Tables\Actions\DeleteAction::make(),
             ])

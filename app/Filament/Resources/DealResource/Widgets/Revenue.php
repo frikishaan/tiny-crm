@@ -3,12 +3,14 @@
 namespace App\Filament\Resources\DealResource\Widgets;
 
 use App\Models\Deal;
-use Filament\Widgets\LineChartWidget;
+use Filament\Widgets\ChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
-class Revenue extends LineChartWidget
+class Revenue extends ChartWidget
 {
+    protected static bool $isLazy = false;
+    
     protected static ?string $heading = 'Revenue per month';
 
     protected static ?string $pollingInterval = '30s';
@@ -20,6 +22,11 @@ class Revenue extends LineChartWidget
             ],
         ],
     ];
+
+    protected function getType(): string
+    {
+        return 'line';
+    }
 
     protected function getData(): array
     {

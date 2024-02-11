@@ -3,30 +3,26 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AccountResource\Pages;
-use App\Filament\Resources\AccountResource\RelationManagers;
 use App\Filament\Resources\AccountResource\RelationManagers\ContactsRelationManager;
 use App\Filament\Resources\AccountResource\RelationManagers\DealsRelationManager;
 use App\Filament\Resources\AccountResource\RelationManagers\LeadsRelationManager;
 use App\Models\Account;
-use Filament\Forms;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Support\RawJs;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AccountResource extends Resource
 {
     protected static ?string $model = Account::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-office-building';
+    protected static ?string $navigationIcon = 'heroicon-o-building-office';
 
     protected static ?string $navigationGroup = 'People';
 
@@ -38,7 +34,7 @@ class AccountResource extends Resource
             ->schema([
                 Group::make()
                     ->schema([
-                        Card::make([
+                        Section::make([
                             TextInput::make('name')
                                 ->required(),
                             TextInput::make('email')
@@ -50,17 +46,10 @@ class AccountResource extends Resource
                         ])
                     ])
                     ->columnSpan(['lg' => 2]),
-                Card::make()
+                Section::make()
                     ->schema([
                         TextInput::make('total_sales')
-                            ->mask(fn (TextInput\Mask $mask) => $mask
-                                ->numeric()
-                                ->decimalPlaces(2)
-                                ->decimalSeparator('.')
-                                ->thousandsSeparator(',')
-                                ->normalizeZeros()
-                                ->padFractionalZeros()
-                            )
+                        ->mask(RawJs::make('$money($input)'))
                             ->prefix('$')
                             ->disabled()
                     ])
@@ -80,7 +69,7 @@ class AccountResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('total_sales')
-                    ->money(shouldConvert: true)
+                    ->money('USD')
             ])
             ->filters([
                 //

@@ -3,23 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
-use Filament\Forms;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Support\RawJs;
+use Filament\Tables\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -27,7 +23,7 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Sales';
 
@@ -47,7 +43,7 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
+                Section::make()
                     ->schema([
                         TextInput::make('product_id')
                             ->label('Product ID')
@@ -67,7 +63,7 @@ class ProductResource extends Resource
                             ->helperText('Type of product'),
                         TextInput::make('price')
                                 ->required()
-                                ->mask(fn (TextInput\Mask $mask) => $mask->money()),
+                                ->mask(RawJs::make('$money($input)')),
                         Toggle::make('is_available')
                                 ->label('Is available for purchase?')
                                 ->inline()
@@ -88,13 +84,10 @@ class ProductResource extends Resource
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('price')
-                    ->money(shouldConvert: true)
+                    ->money('USD')
                     ->sortable(),
-                BadgeColumn::make('type')
-                    ->enum([
-                        1 => 'Service',
-                        2 => 'Physical'
-                    ])
+                TextColumn::make('type')
+                    ->badge()
                     ->colors([
                         'secondary' => 1,
                         'warning' => 2

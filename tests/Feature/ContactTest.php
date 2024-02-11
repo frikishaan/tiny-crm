@@ -3,7 +3,7 @@
 use App\Filament\Resources\ContactResource;
 use App\Models\Account;
 use App\Models\Contact;
-use Filament\Pages\Actions\DeleteAction;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 
@@ -141,7 +141,7 @@ it('can delete', function () {
     livewire(ContactResource\Pages\EditContact::class, [
         'record' => $contact->getRouteKey(),
     ])
-        ->callPageAction(DeleteAction::class);
+        ->callAction(DeleteAction::class);
  
     $this->assertModelMissing($contact);
 });

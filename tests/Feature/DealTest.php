@@ -1,17 +1,14 @@
 <?php
 
 use App\Enums\DealStatus;
-use App\Enums\LeadDisqualificationReason;
-use App\Enums\LeadStatus;
 use App\Filament\Resources\DealResource;
-use App\Filament\Resources\LeadResource;
+use App\Filament\Resources\DealResource\Pages\EditDeal;
 use App\Models\Account;
 use App\Models\Deal;
 use App\Models\DealProduct;
 use App\Models\Lead;
 use App\Models\Product;
-use Filament\Pages\Actions\DeleteAction;
-use Filament\Tables\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 
@@ -107,7 +104,7 @@ it('can retrieve data', function () {
         ->assertFormSet([
             'title' => $deal->title,
             'customer_id' => $deal->customer_id,
-            'status' => $deal->status,
+            'status' => $deal->status->value,
             'actual_revenue' => $deal->actual_revenue,
             'estimated_revenue' => $deal->estimated_revenue,
         ]);
@@ -117,6 +114,7 @@ it('can save', function () {
     $deal = Deal::factory()->create([
         'status' => DealStatus::Open->value
     ]);
+
     $newData = Deal::factory()->make();
  
     livewire(DealResource\Pages\EditDeal::class, [
@@ -138,7 +136,7 @@ it('can save', function () {
         ->source->toBe($newData->source)
         ->actual_revenue->toBe((string)$newData->actual_revenue)
         ->estimated_revenue->toBe((string)$newData->estimated_revenue)
-        ->status->toBe(DealStatus::Open->value);
+        ->status->value->toBe(DealStatus::Open->value);
 });
 
 it('can validate input on edit form', function () {
@@ -167,7 +165,7 @@ it('can delete', function () {
     livewire(DealResource\Pages\EditDeal::class, [
         'record' => $deal->getRouteKey(),
     ])
-        ->callPageAction(DeleteAction::class);
+        ->callAction(DeleteAction::class);
  
     $this->assertModelMissing($deal);
 });
@@ -181,6 +179,7 @@ it('can render product relations', function () {
  
     livewire(DealResource\RelationManagers\ProductsRelationManager::class, [
         'ownerRecord' => $deal,
+        'pageClass' => EditDeal::class
     ])
         ->assertSuccessful();
 });
@@ -197,16 +196,16 @@ it('can close as won', function() {
     livewire(DealResource\Pages\EditDeal::class, [
         'record' => $deal->getRouteKey(),
     ])
-        ->callPageAction('close_as_won');
+        ->callAction('close_as_won');
 
     expect($deal->refresh())
-        ->status->toBe(DealStatus::Won->value);
+        ->status->value->toBe(DealStatus::Won->value);
 
     livewire(DealResource\Pages\EditDeal::class, [
         'record' => $deal->getRouteKey(),
     ])
-        ->assertPageActionHidden('close_as_won')
-        ->assertPageActionHidden('close_as_lost');
+        ->assertActionHidden('close_as_won')
+        ->assertActionHidden('close_as_lost');
 });
 
 it('can close as lost', function() {
@@ -221,14 +220,14 @@ it('can close as lost', function() {
     livewire(DealResource\Pages\EditDeal::class, [
         'record' => $deal->getRouteKey(),
     ])
-        ->callPageAction('close_as_lost');
+        ->callAction('close_as_lost');
 
     expect($deal->refresh())
-        ->status->toBe(DealStatus::Lost->value);
+        ->status->value->toBe(DealStatus::Lost->value);
 
     livewire(DealResource\Pages\EditDeal::class, [
         'record' => $deal->getRouteKey(),
     ])
-        ->assertPageActionHidden('close_as_won')
-        ->assertPageActionHidden('close_as_lost');
+        ->assertActionHidden('close_as_won')
+        ->assertActionHidden('close_as_lost');
 });

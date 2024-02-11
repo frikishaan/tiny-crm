@@ -12,14 +12,15 @@ use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Support\RawJs;
+use Filament\Tables\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -31,7 +32,7 @@ class LeadResource extends Resource
 {
     protected static ?string $model = Lead::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-phone-incoming';
+    protected static ?string $navigationIcon = 'heroicon-o-phone-arrow-down-left';
 
     protected static ?string $navigationGroup = 'Sales';
 
@@ -39,12 +40,12 @@ class LeadResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    protected static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         return static::getModel()::where('status', 1)->count();
     }
 
-    protected static function getNavigationBadgeColor(): ?string
+    public static function getNavigationBadgeColor(): ?string
     {
         return static::getModel()::where('status', 1)->count() > 10 ? 'warning' : 'primary';
     }
@@ -86,7 +87,7 @@ class LeadResource extends Resource
                             ])
                     ])
                     ->columnSpan(2),
-                Card::make()
+                Section::make()
                     ->schema([
                         Select::make('status')
                             ->options([
@@ -131,7 +132,7 @@ class LeadResource extends Resource
                             ->visible(fn(?Lead $record) => $record?->status == 4),
                         TextInput::make('estimated_revenue')
                             ->label('Estimated revenue')
-                            ->mask(fn (TextInput\Mask $mask) => $mask->money())
+                            ->mask(RawJs::make('$money($input)'))
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4]))
                     ])
                     ->columnSpan(1)
@@ -149,19 +150,8 @@ class LeadResource extends Resource
                 TextColumn::make('customer.name')
                     ->searchable()
                     ->sortable(),
-                BadgeColumn::make('status')
-                    ->enum([
-                        1 => 'Prospect',
-                        2 => 'Open',
-                        3 => 'Qualified',
-                        4 => 'Disqualified'
-                    ])
-                    ->colors([
-                        'secondary' => 1,
-                        'warning' => 2,
-                        'success' => 3,
-                        'danger' => 4
-                    ])
+                TextColumn::make('status')
+                    ->badge()
             ])
             ->filters([
                 SelectFilter::make('status')
