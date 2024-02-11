@@ -2,7 +2,7 @@
 
 use App\Filament\Resources\ProductResource;
 use App\Models\Product;
-use Filament\Pages\Actions\DeleteAction;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 
@@ -154,7 +154,7 @@ it('can delete', function () {
     livewire(ProductResource\Pages\EditProduct::class, [
         'record' => $product->getRouteKey(),
     ])
-        ->callPageAction(DeleteAction::class);
+        ->callAction(DeleteAction::class);
  
     $this->assertModelMissing($product);
 });

@@ -6,12 +6,13 @@ use Akaunting\Money\Money;
 use App\Models\Deal;
 use App\Models\Lead;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
-use Filament\Widgets\StatsOverviewWidget\Card;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
 
 class StatsOverview extends BaseWidget
 {
+    protected static bool $isLazy = false;
+
     protected function getCards(): array
     {
         return [

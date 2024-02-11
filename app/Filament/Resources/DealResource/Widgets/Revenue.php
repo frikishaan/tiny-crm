@@ -9,6 +9,8 @@ use Flowframe\Trend\TrendValue;
 
 class Revenue extends ChartWidget
 {
+    protected static bool $isLazy = false;
+    
     protected static ?string $heading = 'Revenue per month';
 
     protected static ?string $pollingInterval = '30s';
