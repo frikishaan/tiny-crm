@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.1|^8.2",
         "akaunting/laravel-money": "^5.1",
         "filament/filament": "^3.1",
         "flowframe/laravel-trend": "^0.1.1",
