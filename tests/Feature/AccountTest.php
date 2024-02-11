@@ -1,11 +1,12 @@
 <?php
 
 use App\Filament\Resources\AccountResource;
+use App\Filament\Resources\AccountResource\Pages\EditAccount;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Deal;
 use App\Models\Lead;
-use Filament\Pages\Actions\DeleteAction;
+use Filament\Actions\DeleteAction;
 
 use function Pest\Livewire\livewire;
 
@@ -129,7 +130,8 @@ it('can delete', function () {
     livewire(AccountResource\Pages\EditAccount::class, [
         'record' => $account->getRouteKey(),
     ])
-        ->callPageAction(DeleteAction::class);
+        ->assertActionHasLabel('delete', 'Delete')
+        ->callAction(DeleteAction::class);
  
     $this->assertModelMissing($account);
 });
@@ -141,6 +143,7 @@ it('can render contacts relation manager', function () {
  
     livewire(AccountResource\RelationManagers\ContactsRelationManager::class, [
         'ownerRecord' => $account,
+        'pageClass' => EditAccount::class
     ])
         ->assertSuccessful();
 });
@@ -152,6 +155,7 @@ it('can render leads relation manager', function () {
  
     livewire(AccountResource\RelationManagers\LeadsRelationManager::class, [
         'ownerRecord' => $account,
+        'pageClass' => EditAccount::class
     ])
         ->assertSuccessful();
 });
@@ -163,6 +167,7 @@ it('can render deals relation manager', function () {
  
     livewire(AccountResource\RelationManagers\DealsRelationManager::class, [
         'ownerRecord' => $account,
+        'pageClass' => EditAccount::class
     ])
         ->assertSuccessful();
 });
@@ -174,6 +179,7 @@ it('can list related contacts', function () {
  
     livewire(AccountResource\RelationManagers\ContactsRelationManager::class, [
         'ownerRecord' => $account,
+        'pageClass' => EditAccount::class
     ])
         ->assertCanSeeTableRecords($account->contacts);
 });
@@ -185,6 +191,7 @@ it('can list related leads', function () {
  
     livewire(AccountResource\RelationManagers\LeadsRelationManager::class, [
         'ownerRecord' => $account,
+        'pageClass' => EditAccount::class
     ])
         ->assertCanSeeTableRecords($account->leads);
 });
@@ -196,6 +203,7 @@ it('can list related deals', function () {
  
     livewire(AccountResource\RelationManagers\DealsRelationManager::class, [
         'ownerRecord' => $account,
+        'pageClass' => EditAccount::class
     ])
         ->assertCanSeeTableRecords($account->deals);
 });

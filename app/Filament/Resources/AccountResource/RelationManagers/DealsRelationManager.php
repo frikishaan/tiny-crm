@@ -44,11 +44,6 @@ class DealsRelationManager extends RelationManager
                     ->money('USD'),
                 TextColumn::make('status')
                     ->badge()
-                    ->options([
-                        1 => 'Open',
-                        2 => 'Won',
-                        3 => 'Lost'
-                    ])
                     ->colors([
                         'secondary' => 1,
                         'success' => 2,

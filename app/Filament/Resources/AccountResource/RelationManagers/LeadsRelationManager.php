@@ -48,12 +48,6 @@ class LeadsRelationManager extends RelationManager
                     ->money('USD'),
                 TextColumn::make('status')
                     ->badge()
-                    ->enum([
-                        1 => 'Prospect',
-                        2 => 'Open',
-                        3 => 'Qualified',
-                        4 => 'Disqualified'
-                    ])
                     ->colors([
                         'secondary' => 1,
                         'warning' => 2,

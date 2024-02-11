@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('account_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('account_id')->references('id')->on('accounts');
+            $table->foreign('account_id')->references('id')->on('accounts')->nullOnDelete();
         });
     }
 

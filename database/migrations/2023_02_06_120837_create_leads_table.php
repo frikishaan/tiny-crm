@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('customer_id')->nullable();
             $table->integer('source')->nullable();
             $table->float('estimated_revenue')->nullable();
             $table->text('description')->nullable();
@@ -27,7 +27,7 @@ return new class extends Migration
             $table->dateTime('date_qualified')->nullable();
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('accounts');
+            $table->foreign('customer_id')->references('id')->on('accounts')->nullOnDelete();
 
             $table->index(['status', 'customer_id']);
         });
