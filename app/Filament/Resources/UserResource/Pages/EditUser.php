@@ -6,7 +6,8 @@ use App\Filament\Resources\UserResource;
 use App\Models\User;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions;
-use Filament\Pages\Actions\Action;
+use Filament\Actions\Action;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
@@ -19,7 +20,16 @@ class EditUser extends EditRecord
     {
         return [
             Action::make('change_password')
-                ->action('updatePassword')
+                ->action(function(array $data) {
+                    if($this->record->id != 1){
+                        $this->record->password = Hash::make($data['password']);
+                        $this->record->save();
+                    }
+            
+                    Notification::make()
+                        ->title('Password updated successfully')
+                        ->success();
+                })
                 ->form([
                     TextInput::make('password')
                         ->label('New password')
@@ -33,18 +43,11 @@ class EditUser extends EditRecord
         ];
     }
 
-    public function updatePassword(array $data): void
-    {
-        if($this->record->id != 1){
-            $this->record->password = Hash::make($data['password']);
-            $this->record->save();
-        }
-
-        $this->notify('success', 'Password updated successfully');
-    }
-
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        /*
+        * Remove this logic in production
+        */
         if($record->id != 1){
             $record->update($data);
         }

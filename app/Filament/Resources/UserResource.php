@@ -44,7 +44,7 @@ class UserResource extends Resource
                     ->password()
                     ->reactive()
                     ->confirmed()
-                    ->disableAutocomplete()
+                    ->autocomplete(false)
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->visible(fn(?User $record) => $record == null),
                  
