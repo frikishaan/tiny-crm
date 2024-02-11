@@ -21,7 +21,7 @@ class DealFactory extends Factory
             'customer_id' => fake()->numberBetween(1, 25),
             'estimated_revenue' => fake()->numberBetween(10000, 100000),
             'actual_revenue' => fake()->numberBetween(10000, 100000),
-            'status' => fake()->numberBetween(1, 4)
+            'status' => fake()->numberBetween(1, 3)
         ];
     }
 }
