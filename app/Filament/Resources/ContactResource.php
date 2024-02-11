@@ -6,8 +6,7 @@ use App\Filament\Resources\ContactResource\Pages;
 use App\Filament\Resources\ContactResource\RelationManagers;
 use App\Models\Account;
 use App\Models\Contact;
-use Filament\Forms;
-use Filament\Forms\Components\Card;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -33,7 +32,7 @@ class ContactResource extends Resource
     {
         return $form
             ->schema([
-                Card::make()
+                Section::make()
                     ->schema([
                         TextInput::make('name')
                             ->required(),
