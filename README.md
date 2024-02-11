@@ -7,14 +7,7 @@ This is a small and Open-source CRM application created using the [Filament PHP]
 ## Tech stack
 
 -   PHP (Laravel)
--   Filament PHP (v2)
--   Tailwind CSS
--   Alpine JS
--   PostgreSQL
-
-## Live demo
-
-The live demo of app is available [here](https://tiny-crm.frikishaan.com/).
+-   Filament PHP
 
 ## Local Installation
 
