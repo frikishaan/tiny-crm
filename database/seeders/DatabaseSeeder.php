@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Enums\LeadStatus;
 use App\Models\Account;
 use App\Models\Contact;
 use App\Models\Deal;
@@ -47,7 +48,7 @@ class DatabaseSeeder extends Seeder
 
         // Create Leads
         Lead::factory(100)->create()->each(function ($lead){
-            if($lead->status == 3){ // Qualified
+            if($lead->status == LeadStatus::Qualified){
                 // Create Deal for this lead
                 $deal = Deal::create([
                     'title' => $lead->title,
