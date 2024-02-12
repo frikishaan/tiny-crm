@@ -18,8 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('deal_id');
             $table->integer('quantity');
-            $table->float('price_per_unit');
-            $table->float('total_amount');
+            $table->double('price_per_unit', 15, 2);
+            $table->double('total_amount', 15, 2);
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products');
