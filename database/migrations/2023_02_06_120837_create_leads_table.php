@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->integer('source')->nullable();
-            $table->float('estimated_revenue')->nullable();
+            $table->double('estimated_revenue', 15, 2)->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->default(1); // Prospect
             $table->integer('disqualification_reason')->nullable();

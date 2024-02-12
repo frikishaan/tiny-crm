@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('lead_id')->nullable();
-            $table->float('estimated_revenue')->nullable();
-            $table->float('actual_revenue')->nullable();
+            $table->double('estimated_revenue', 15, 2)->nullable();
+            $table->double('actual_revenue', 15, 2)->nullable();
             $table->text('description')->nullable();
             $table->integer('status')->default(1); // Open
             $table->dateTime('date_won')->nullable();

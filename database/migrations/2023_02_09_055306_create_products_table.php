@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('product_id')->unique();
             $table->string('name');
             $table->integer('type');
-            $table->float('price');
+            $table->double('price', 15, 2);
             $table->boolean('is_available')->default(true);
             $table->timestamps();
 
