@@ -133,6 +133,8 @@ class LeadResource extends Resource
                         TextInput::make('estimated_revenue')
                             ->label('Estimated revenue')
                             ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->numeric()
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4]))
                     ])
                     ->columnSpan(1)

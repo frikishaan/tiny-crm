@@ -62,8 +62,10 @@ class ProductResource extends Resource
                             ->required()
                             ->helperText('Type of product'),
                         TextInput::make('price')
-                                ->required()
-                                ->mask(RawJs::make('$money($input)')),
+                            ->required()
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->numeric(),
                         Toggle::make('is_available')
                                 ->label('Is available for purchase?')
                                 ->inline()

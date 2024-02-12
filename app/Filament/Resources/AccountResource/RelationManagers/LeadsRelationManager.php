@@ -33,6 +33,8 @@ class LeadsRelationManager extends RelationManager
                 TextInput::make('estimated_revenue')
                     ->label('Estimated revenue')
                     ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->numeric()
             ]);
     }
 

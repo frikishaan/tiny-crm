@@ -49,7 +49,9 @@ class AccountResource extends Resource
                 Section::make()
                     ->schema([
                         TextInput::make('total_sales')
-                        ->mask(RawJs::make('$money($input)'))
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->numeric()
                             ->prefix('$')
                             ->disabled()
                     ])
