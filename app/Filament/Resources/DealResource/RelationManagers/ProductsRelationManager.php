@@ -47,6 +47,7 @@ class ProductsRelationManager extends RelationManager
                         $set('total_amount', (string)($get('price_per_unit') * $state))),
                 TextInput::make('price_per_unit')
                     ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
                     ->numeric()
                     ->required()
                     ->helperText('Price per unit of product')
@@ -56,6 +57,8 @@ class ProductsRelationManager extends RelationManager
                 TextInput::make('total_amount')
                     ->label('Total amount')
                     ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->numeric()
                     ->disabled()
                     ->default(0)
             ]);
