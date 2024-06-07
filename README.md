@@ -1,5 +1,7 @@
 # Tiny crm
 
+![Tiny CRM dashboard screenshot](screenshots/Dashboard%20Screenshot.png "Tiny CRM dashboard screenshot")
+
 [![Tests](https://github.com/frikishaan/tiny-crm/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/frikishaan/tiny-crm/actions/workflows/run-tests.yml)
 
 This is a small and Open-source CRM application created using the [Filament PHP](https://filamentphp.com/).
