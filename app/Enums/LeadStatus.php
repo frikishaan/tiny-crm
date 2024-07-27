@@ -25,7 +25,7 @@ enum LeadStatus: int implements HasColor, HasLabel
     public function getColor(): string | array | null
     {
         return match ($this) {
-            self::Prospect => 'secondary',
+            self::Prospect => 'info',
             self::Open => 'warning',
             self::Qualified => 'success',
             self::Disqualified => 'danger'
