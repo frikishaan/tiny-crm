@@ -90,7 +90,7 @@ it('can retrieve data', function () {
             'product_id' => $product->product_id,
             'name' => $product->name,
             'price' => $product->price,
-            'type' => $product->type,
+            'type' => $product->type->value,
         ]);
 });
 
