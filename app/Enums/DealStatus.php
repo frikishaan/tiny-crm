@@ -23,7 +23,7 @@ enum DealStatus: int implements HasColor, HasLabel
     public function getColor(): string | array | null
     {
         return match ($this) {
-            self::Open => 'secondary',
+            self::Open => 'warning',
             self::Won => 'success',
             self::Lost => 'danger'
         };
