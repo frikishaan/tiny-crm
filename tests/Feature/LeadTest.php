@@ -20,17 +20,23 @@ it('can see', function() {
 
     $response->assertStatus(200);
 
+    // title
     $response->assertSeeText('Leads');
 
+    // widgets
+    $response->assertSeeText([
+        'Open Leads', 'Qualified leads',
+        'Disqualified leads', 'Avg Estimated Revenue'
+    ]);
+    
+    // tabs
+    $response->assertSeeText([
+        'All', 'Prospect', 'Open', 'Qualified',
+        'Disqualified'
+    ]);
+
+    // button
     $response->assertSeeText('New lead');
-
-    $response->assertSeeText('Open Leads');
-
-    $response->assertSeeText('Qualified leads');
-    
-    $response->assertSeeText('Disqualified leads');
-    
-    $response->assertSeeText('Avg Estimated Revenue');
 });
 
 it('can list', function () {

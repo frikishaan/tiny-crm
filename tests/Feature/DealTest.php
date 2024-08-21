@@ -23,17 +23,19 @@ it('can see', function() {
 
     $response->assertStatus(200);
 
+    // Title
     $response->assertSeeText('Deals');
-
+    
+    // widgets
+    $response->assertSeeText([
+        'Open deals', 'Deals won', 'Avg Revenue (per deal)', 'Total revenue'
+    ]);
+    
+    // button
     $response->assertSeeText('New deal');
 
-    $response->assertSeeText('Open deals');
-
-    $response->assertSeeText('Deals won');
-    
-    $response->assertSeeText('Avg Revenue (per deal)');
-    
-    $response->assertSeeText('Total revenue');
+    // tabs
+    $response->assertSeeText(['All', 'Open', 'Won', 'Lost']);
 });
 
 it('can list', function () {
