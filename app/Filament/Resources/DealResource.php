@@ -102,14 +102,6 @@ class DealResource extends Resource
                 TextColumn::make('status')
                     ->badge()
             ])
-            ->filters([
-                SelectFilter::make('status')
-                    ->options([
-                        1 => 'Open',
-                        2 => 'Won',
-                        3 => 'Lost'
-                    ])
-            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -123,7 +115,7 @@ class DealResource extends Resource
                     }),
             ]);
     }
-    
+ 
     public static function getRelations(): array
     {
         return [

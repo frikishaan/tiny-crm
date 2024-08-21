@@ -2,10 +2,14 @@
 
 namespace App\Filament\Resources\DealResource\Pages;
 
+use App\Enums\DealStatus;
 use App\Filament\Resources\DealResource;
 use App\Filament\Resources\DealResource\Widgets\DealStats;
-use Filament\Pages\Actions;
+use App\Models\Deal;
+use Filament\Actions\CreateAction;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Illuminate\Database\Eloquent\Builder;
 
 class ListDeals extends ListRecords
 {
@@ -14,7 +18,7 @@ class ListDeals extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 
@@ -22,6 +26,20 @@ class ListDeals extends ListRecords
     {
         return [
             DealStats::class,
+        ];
+    }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('All'),
+            'open' => Tab::make('Open')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', DealStatus::Open->value))
+                ->badge(Deal::query()->where('status', DealStatus::Open->value)->count()),
+            'won' => Tab::make('Won')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', DealStatus::Won->value)),
+            'lost' => Tab::make('Lost')
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', DealStatus::Lost->value)),
         ];
     }
 }

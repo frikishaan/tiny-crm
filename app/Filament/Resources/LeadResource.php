@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\LeadStatus;
 use App\Filament\Resources\LeadResource\Pages;
 use App\Filament\Resources\LeadResource\RelationManagers;
 use App\Models\Account;
@@ -76,7 +75,7 @@ class LeadResource extends Resource
                             ->createOptionAction(function (Forms\Components\Actions\Action $action) {
                                 return $action
                                     ->modalHeading('Create customer')
-                                    ->modalButton('Create customer')
+                                    ->modalSubmitAction('Create customer')
                                     ->modalWidth('lg');
                             })
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
@@ -154,15 +153,6 @@ class LeadResource extends Resource
                     ->sortable(),
                 TextColumn::make('status')
                     ->badge()
-            ])
-            ->filters([
-                SelectFilter::make('status')
-                    ->options([
-                        1 => 'Prospect',
-                        2 => 'Open',
-                        3 => 'Qualified',
-                        4 => 'Disqualified'
-                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
