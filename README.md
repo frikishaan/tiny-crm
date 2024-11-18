@@ -47,6 +47,6 @@ Optionally, you can create the dummy data by running the seeder as -
 php artisan db:seed
 ```
 
-## Need assistance?
+<!-- ## Need assistance?
 
-If you need help customizing this application or want to create your own application like this, contact me on [upwork](https://www.upwork.com/services/product/consulting-hr-a-customer-crm-software-1651120102232907776?ref=project_share) or on [LinkedIn](https://www.linkedin.com/in/ishaan-s/).
+If you need help customizing this application or want to create your own application like this, contact me on [upwork](https://www.upwork.com/services/product/consulting-hr-a-customer-crm-software-1651120102232907776?ref=project_share) or on [LinkedIn](https://www.linkedin.com/in/ishaan-s/). -->
