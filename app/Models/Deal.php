@@ -16,9 +16,12 @@ class Deal extends Model
         'actual_revenue', 'status'
     ];
 
-    public $casts = [
-        'status' => DealStatus::class
-    ];
+    protected function casts(): array
+    {
+        return [
+            'status' => DealStatus::class,
+        ];
+    }
 
     public function customer()
     {

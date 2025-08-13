@@ -15,9 +15,12 @@ class Lead extends Model
         'description', 'disqualification_reason', 'disqualification_description'
     ];
 
-    public $casts = [
-        'status' => LeadStatus::class
-    ];
+    protected function casts(): array
+    {
+        return [
+            'status' => LeadStatus::class,
+        ];
+    }
 
     public function customer()
     {
