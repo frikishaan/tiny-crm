@@ -2,12 +2,16 @@
 
 namespace App\Filament\Resources\AccountResource\RelationManagers;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\CreateAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use App\Filament\Resources\DealResource;
 use App\Models\Deal;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables\Table;
 use Filament\Tables;
@@ -22,10 +26,10 @@ class DealsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255)
@@ -59,16 +63,16 @@ class DealsRelationManager extends RelationManager
                     ])
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->url(DealResource::getUrl('create')),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                EditAction::make()
                     ->url(fn(Deal $record) => DealResource::getUrl('edit', ['record' => $record->id])),
-                Tables\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                DeleteBulkAction::make()
                     ->action(function(){
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

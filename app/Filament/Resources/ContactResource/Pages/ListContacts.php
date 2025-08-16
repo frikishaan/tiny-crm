@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ContactResource\Pages;
 
+use Filament\Actions\CreateAction;
 use App\Filament\Resources\ContactResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
@@ -13,7 +14,7 @@ class ListContacts extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

@@ -17,7 +17,7 @@ class DealProductObserver
     /**
      * Handle the DealProduct "updated" event.
      *
-     * @param  \App\Models\DealProduct  $dealProduct
+     * @param DealProduct $dealProduct
      * @return void
      */
     public function saved(DealProduct $dealProduct)
@@ -28,7 +28,7 @@ class DealProductObserver
     /**
      * Handle the DealProduct "deleted" event.
      *
-     * @param  \App\Models\DealProduct  $dealProduct
+     * @param DealProduct $dealProduct
      * @return void
      */
     public function deleted(DealProduct $dealProduct)

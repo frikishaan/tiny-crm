@@ -2,9 +2,7 @@
 
 namespace App\Filament\Pages\Auth;
 
-use Filament\Http\Livewire\Auth\Login as BasePage;
-
-class Login extends BasePage
+class Login extends \Filament\Auth\Pages\Login
 {
     public function mount(): void
     {

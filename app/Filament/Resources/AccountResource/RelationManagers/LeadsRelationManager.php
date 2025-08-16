@@ -2,12 +2,16 @@
 
 namespace App\Filament\Resources\AccountResource\RelationManagers;
 
+use Filament\Schemas\Schema;
+use Filament\Actions\CreateAction;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use App\Filament\Resources\LeadResource;
 use App\Models\Lead;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\RawJs;
 use Filament\Tables\Table;
@@ -23,10 +27,10 @@ class LeadsRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('title')
                     ->required()
                     ->maxLength(255),
@@ -67,17 +71,17 @@ class LeadsRelationManager extends RelationManager
                     ])
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('edit')
+            ->recordActions([
+                Action::make('edit')
                     ->label('Edit')
                     ->icon('heroicon-o-pencil-square')
                     ->url(fn(Lead $record) => LeadResource::getUrl('edit', ['record' => $record->id])),
-                Tables\Actions\DeleteAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                DeleteBulkAction::make()
                     ->action(function(){
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')

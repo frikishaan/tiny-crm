@@ -2,12 +2,12 @@
 
 namespace App\Filament\Resources\LeadResource\Pages;
 
+use Filament\Schemas\Components\Tabs\Tab;
 use App\Enums\LeadStatus;
 use App\Filament\Resources\LeadResource;
 use App\Filament\Resources\LeadResource\Widgets\LeadStats;
 use App\Models\Lead;
 use Filament\Actions\CreateAction;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 
