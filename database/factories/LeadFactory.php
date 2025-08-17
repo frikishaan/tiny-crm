@@ -20,8 +20,8 @@ class LeadFactory extends Factory
             'title' => fake()->sentence(fake()->numberBetween(2, 4)),
             'customer_id' => fake()->numberBetween(1, 25),
             'source' => fake()->numberBetween(1, 5),
-            'estimated_revenue' => fake()->numberBetween(10000, 100000),
-            'description' => fake()->realText(200),
+            'estimated_revenue' => fake()->randomFloat(1, 10000, 100000),
+            'description' => fake()->paragraph(10),
             'status' => fake()->numberBetween(1, 4),
             'created_at' => fake()->dateTimeBetween('-1 years')
         ];

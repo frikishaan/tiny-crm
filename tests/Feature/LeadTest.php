@@ -61,7 +61,12 @@ it('can create', function () {
             'customer_id' => $newData->customer_id,
             'source' => $newData->source,
             'estimated_revenue' => $newData->estimated_revenue,
-            'description' => $newData->description,
+            'description' => [
+                'type' => 'doc',
+                'content' => [
+                    ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => $newData->description]]]
+                ],
+            ],
             'status' => $newData->status,
         ])
         ->call('create')
@@ -72,7 +77,7 @@ it('can create', function () {
         'customer_id' => $newData->customer_id,
         'source' => $newData->source,
         'estimated_revenue' => (string)$newData->estimated_revenue,
-        'description' => $newData->description,
+        'description' => '<p>'. $newData->description .'</p>',
         'status' => $newData->status,
     ]);
 });
@@ -111,7 +116,7 @@ it('can retrieve data', function () {
             'customer_id' => $lead->customer_id,
             'status' => $lead->status->value,
             'source' => $lead->source,
-            'description' => $lead->description,
+            'description' => '<p>' . $lead->description . '</p>',
             'estimated_revenue' => $lead->estimated_revenue,
         ]);
 });
@@ -129,7 +134,12 @@ it('can save', function () {
             'title' => $newData->title,
             'customer_id' => $newData->customer_id,
             'source' => $newData->source,
-            'description' => $newData->description,
+            'description' => [
+                'type' => 'doc',
+                'content' => [
+                    ['type' => 'paragraph', 'content' => [['type' => 'text', 'text' => $newData->description]]]
+                ],
+            ],
             'estimated_revenue' => $newData->estimated_revenue,
             'status' => LeadStatus::Open->value
         ])
@@ -140,8 +150,8 @@ it('can save', function () {
         ->title->toBe($newData->title)
         ->customer_id->toBe($newData->customer_id)
         ->source->toBe($newData->source)
-        ->description->toBe($newData->description)
-        ->estimated_revenue->toBe((string)$newData->estimated_revenue)
+        ->description->toBe('<p>' . $newData->description . '</p>')
+        ->estimated_revenue->toBe($newData->estimated_revenue)
         ->status->value->toBe(LeadStatus::Open->value);
 });
 

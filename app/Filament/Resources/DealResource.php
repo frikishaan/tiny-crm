@@ -60,9 +60,8 @@ class DealResource extends Resource
                             ->searchable()
                             ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
                         RichEditor::make('description')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                                'codeBlock'
+                            ->toolbarButtons([
+                                'bold', 'italic', 'underline', 'strike', 'link', 'table', 'undo', 'redo'
                             ])
                     ])
                     ->columnSpan(2),

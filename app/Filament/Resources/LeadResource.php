@@ -85,9 +85,8 @@ class LeadResource extends Resource
                             })
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
                         RichEditor::make('description')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                                'codeBlock'
+                            ->toolbarButtons([
+                                'bold', 'italic', 'underline', 'strike', 'link', 'table', 'undo', 'redo'
                             ])
                     ])
                     ->columnSpan(2),

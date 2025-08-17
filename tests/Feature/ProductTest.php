@@ -113,13 +113,7 @@ it('can update', function () {
     expect($product->refresh())
         ->name->toBe($newData->name)
         ->product_id->toBe($newData->product_id)
-        /**
-         * Casting the retruned value to string.
-         * 
-         * See - https://github.com/laravel/framework/issues/3548
-         * 
-         */
-        ->price->toBe((string)$newData->price)
+        ->price->toBe($newData->price)
         ->type->toBe($newData->type);
 });
 
