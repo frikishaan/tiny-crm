@@ -18,6 +18,7 @@ class Product extends Model
     {
         return [
             'type' => ProductType::class,
+            'price' => 'float',
         ];
     }
 }

@@ -20,6 +20,8 @@ class Deal extends Model
     {
         return [
             'status' => DealStatus::class,
+            'estimated_revenue' => 'float',
+            'actual_revenue' => 'float',
         ];
     }
 

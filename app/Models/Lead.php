@@ -19,6 +19,7 @@ class Lead extends Model
     {
         return [
             'status' => LeadStatus::class,
+            'estimated_revenue' => 'float'
         ];
     }
 
