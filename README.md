@@ -47,9 +47,9 @@ Optionally, you can create the dummy data by running the seeder as -
 php artisan db:seed
 ```
 
-## You might also like
+<!-- ## You might also like
 If you like tiny-crm, check out my other project [Lynx](https://github.com/frikishaan/lynx), an open-source link shortener. It’s a great tool for creating and managing shortened links, perfect for tracking campaigns and sharing links more efficiently.
-
+-->
 
 <!-- ## Need assistance?
 
