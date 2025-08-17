@@ -14,7 +14,11 @@ class Product extends Model
         'product_id', 'name', 'type', 'price', 'is_available'
     ];
 
-    protected $casts = [
-        'type' => ProductType::class
-    ];
+    protected function casts(): array
+    {
+        return [
+            'type' => ProductType::class,
+            'price' => 'float',
+        ];
+    }
 }

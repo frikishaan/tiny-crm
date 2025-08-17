@@ -2,20 +2,25 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\LeadResource\Pages\ListLeads;
+use App\Filament\Resources\LeadResource\Pages\CreateLead;
+use App\Filament\Resources\LeadResource\Pages\EditLead;
 use App\Filament\Resources\LeadResource\Pages;
 use App\Filament\Resources\LeadResource\RelationManagers;
 use App\Models\Account;
 use App\Models\Lead;
 use Filament\Forms;
-use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables\Table;
@@ -31,9 +36,9 @@ class LeadResource extends Resource
 {
     protected static ?string $model = Lead::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-phone-arrow-down-left';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-phone-arrow-down-left';
 
-    protected static ?string $navigationGroup = 'Sales';
+    protected static string | \UnitEnum | null $navigationGroup = 'Sales';
 
     protected static ?int $navigationSort = 1;
 
@@ -49,11 +54,11 @@ class LeadResource extends Resource
         return static::getModel()::where('status', 1)->count() > 10 ? 'warning' : 'primary';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Card::make()
+        return $schema
+            ->components([
+                Section::make()
                     ->schema([
                         TextInput::make('title')
                             ->maxLength(255)
@@ -72,7 +77,7 @@ class LeadResource extends Resource
                                     ->email()
                                     ->unique()
                             ])
-                            ->createOptionAction(function (Forms\Components\Actions\Action $action) {
+                            ->createOptionAction(function (Action $action) {
                                 return $action
                                     ->modalHeading('Create customer')
                                     ->modalSubmitAction('Create customer')
@@ -80,9 +85,8 @@ class LeadResource extends Resource
                             })
                             ->disabled(fn(?Lead $record) => in_array($record?->status, [3, 4])),
                         RichEditor::make('description')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                                'codeBlock'
+                            ->toolbarButtons([
+                                'bold', 'italic', 'underline', 'strike', 'link', 'table', 'undo', 'redo'
                             ])
                     ])
                     ->columnSpan(2),
@@ -154,11 +158,11 @@ class LeadResource extends Resource
                 TextColumn::make('status')
                     ->badge()
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                DeleteBulkAction::make()
                     ->action(function(){
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
@@ -178,9 +182,9 @@ class LeadResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListLeads::route('/'),
-            'create' => Pages\CreateLead::route('/create'),
-            'edit' => Pages\EditLead::route('/{record}/edit'),
+            'index' => ListLeads::route('/'),
+            'create' => CreateLead::route('/create'),
+            'edit' => EditLead::route('/{record}/edit'),
         ];
     }
 

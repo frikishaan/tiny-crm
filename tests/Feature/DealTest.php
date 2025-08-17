@@ -136,8 +136,8 @@ it('can save', function () {
         ->title->toBe($newData->title)
         ->customer_id->toBe($newData->customer_id)
         ->source->toBe($newData->source)
-        ->actual_revenue->toBe((string)$newData->actual_revenue)
-        ->estimated_revenue->toBe((string)$newData->estimated_revenue)
+        ->actual_revenue->toBe($newData->actual_revenue)
+        ->estimated_revenue->toBe($newData->estimated_revenue)
         ->status->value->toBe(DealStatus::Open->value);
 });
 

@@ -2,17 +2,22 @@
 
 namespace App\Filament\Resources;
 
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+use Filament\Actions\EditAction;
+use Filament\Actions\DeleteBulkAction;
+use App\Filament\Resources\DealResource\Pages\ListDeals;
+use App\Filament\Resources\DealResource\Pages\CreateDeal;
+use App\Filament\Resources\DealResource\Pages\EditDeal;
 use App\Filament\Resources\DealResource\Pages;
 use App\Filament\Resources\DealResource\RelationManagers\ProductsRelationManager;
 use App\Models\Account;
 use App\Models\Deal;
 use App\Models\Lead;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables\Table;
@@ -26,18 +31,18 @@ class DealResource extends Resource
 {
     protected static ?string $model = Deal::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-check';
+    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-clipboard-document-check';
 
-    protected static ?string $navigationGroup = 'Sales';
+    protected static string | \UnitEnum | null $navigationGroup = 'Sales';
 
     protected static ?int $navigationSort = 2;
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make()
                     ->schema([
                         TextInput::make('title')
@@ -55,9 +60,8 @@ class DealResource extends Resource
                             ->searchable()
                             ->disabled(fn(?Deal $record) => in_array($record?->status, [2, 3])),
                         RichEditor::make('description')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                                'codeBlock'
+                            ->toolbarButtons([
+                                'bold', 'italic', 'underline', 'strike', 'link', 'table', 'undo', 'redo'
                             ])
                     ])
                     ->columnSpan(2),
@@ -102,11 +106,11 @@ class DealResource extends Resource
                 TextColumn::make('status')
                     ->badge()
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make()
+            ->toolbarActions([
+                DeleteBulkAction::make()
                     ->action(function(){
                         Notification::make()
                             ->title('Now, now, don\'t be cheeky, leave some records for others to play with!')
@@ -126,9 +130,9 @@ class DealResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDeals::route('/'),
-            'create' => Pages\CreateDeal::route('/create'),
-            'edit' => Pages\EditDeal::route('/{record}/edit'),
+            'index' => ListDeals::route('/'),
+            'create' => CreateDeal::route('/create'),
+            'edit' => EditDeal::route('/{record}/edit'),
         ];
     }    
 }

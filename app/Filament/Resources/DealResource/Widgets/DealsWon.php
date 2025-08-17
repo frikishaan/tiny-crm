@@ -11,11 +11,11 @@ class DealsWon extends ChartWidget
 {
     protected static bool $isLazy = false;
     
-    protected static ?string $heading = 'Deals won per month';
+    protected ?string $heading = 'Deals won per month';
 
-    protected static ?string $pollingInterval = '30s';
+    protected ?string $pollingInterval = '30s';
 
-    protected static ?array $options = [
+    protected ?array $options = [
         'plugins' => [
             'legend' => [
                 'display' => false,

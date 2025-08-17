@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -27,6 +28,10 @@ return new class extends Migration
     public function down()
     {
         Schema::table('accounts', function (Blueprint $table) {
+            if (DB::getDriverName() === 'sqlite') {
+                // For SQLite, we need to drop the foreign key constraint first
+                $table->dropForeign(['primary_contact_id']);
+            }
             $table->dropColumn('primary_contact_id');
         });
     }

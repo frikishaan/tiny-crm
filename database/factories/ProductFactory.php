@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             'name' => fake()->sentence(rand(2, 3)),
             'product_id' => 'PRO-' . strtoupper(Str::random(8)),
             'type' => rand(1, 2),
-            'price' => fake()->numberBetween(500, 5000),
+            'price' => fake()->randomFloat(1, 500, 5000),
             'is_available' => fake()->boolean(90)
         ];
     }

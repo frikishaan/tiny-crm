@@ -41,7 +41,7 @@ class RollupTotalSalesForCustomer implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  \App\Events\DealQualified  $event
+     * @param DealQualified $event
      * @return void
      */
     public function handle(DealQualified $event)

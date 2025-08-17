@@ -37,7 +37,7 @@ class EditLead extends EditRecord
             Action::make('disqualify')
                 ->icon('heroicon-o-x-circle')
                 ->color('warning')
-                ->form([
+                ->schema([
                     Select::make('disqualification_reason')
                         ->label('Reason for disqualification')
                         ->options([

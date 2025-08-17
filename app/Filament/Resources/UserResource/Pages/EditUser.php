@@ -30,7 +30,7 @@ class EditUser extends EditRecord
                         ->title('Password updated successfully')
                         ->success();
                 })
-                ->form([
+                ->schema([
                     TextInput::make('password')
                         ->label('New password')
                         ->password()
