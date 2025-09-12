@@ -13,8 +13,13 @@ This is a small and Open-source CRM application created using the [Filament PHP]
 
 ## Local Installation
 
-1. Clone the repository
-2. Run the following commands -
+### Clone the repository
+
+```bash
+git clone https://github.com/frikishaan/tiny-crm.git
+```
+
+### Install dependencies
 
 ```bash
 composer install #installing php dependencies
@@ -24,9 +29,23 @@ npm install # installing the JS dependencies
 npm run build # to build the frontend assets
 ```
 
-3. Replace the database credentials in the `.env` file.
+### Create environment file
 
+```bash
+cp .env.example .env
 ```
+
+### Generate application key
+
+```bash
+php artisan key:generate
+```
+
+### Update environment variables
+
+Replace the following values in `.env` file with your database credentials. For example -
+
+```bash
 DB_CONNECTION=pgsql
 DB_HOST=127.0.0.1
 DB_PORT=5432
@@ -35,7 +54,7 @@ DB_USERNAME=postgres
 DB_PASSWORD=password
 ```
 
-4. Now run the following command to create the required tables in database -
+### Migrate the database
 
 ```bash
 php artisan migrate
